@@ -1,1 +1,1 @@
-app_image_tag = "bootstrap"
+app_image_tag = "e8b6cd9c4eb50309d91eedede487db9c4d139b25"
