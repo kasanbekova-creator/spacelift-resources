@@ -1,10 +1,30 @@
-# TODO(spacelift): Kubernetes worker pool via Helm spacelift-workerpool-controller + WorkerPool CRD,
-# running as pods inside the private dvtl815-poc cluster.
-#
-# Steps:
-#   1. Add the Spacelift Helm repo and install spacelift-workerpool-controller into a dedicated namespace.
-#   2. Create a WorkerPool CRD resource referencing the token/credentials from the Spacelift console.
-#   3. Wire the worker pool to the stacks in dvtl-815-infra/ and dvtl-815-resources/.
-#
-# Resource blocks (helm_release, kubernetes_manifest for WorkerPool CRD) go here once auth
-# method is confirmed (see auth.tf).
+resource "helm_release" "spacelift_kubernetes_workers" {
+  name = "spacelift-workerpool-controller"
+
+  repository = "https://downloads.spacelift.io/helm"
+  chart      = "spacelift-workerpool-controller"
+  # TODO: pin version (helm list -n spacelift-worker-controller-system)
+
+  namespace        = "spacelift-worker-controller-system"
+  create_namespace = true
+}
+
+resource "kubernetes_manifest" "worker_pool" {
+  manifest = {
+    apiVersion = "workers.spacelift.io/v1beta1"
+    kind       = "WorkerPool"
+    metadata = {
+      name      = "test-workerpool"
+      namespace = "spacelift-worker-controller-system"
+    }
+    spec = {
+      poolSize   = 2
+      token      = { secretKeyRef = { name = "test-workerpool", key = "token" } }
+      privateKey = { secretKeyRef = { name = "test-workerpool", key = "privateKey" } }
+    }
+  }
+
+  depends_on = [helm_release.spacelift_kubernetes_workers]
+}
+
+# Secret (token + privateKey) is applied manually to keep the private key out of state.

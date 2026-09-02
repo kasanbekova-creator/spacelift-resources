@@ -4,14 +4,6 @@ variable "eks_cluster_name" {
   default     = "dvtl815-poc"
 }
 
-# get-token signs with the ambient identity unless told otherwise; pin it to the role the
-# EKS access entry maps (spacelift-infra), so a drifting worker identity can't cause Unauthorized.
-variable "worker_role_arn" {
-  description = "IAM role the k8s/helm get-token must assume; must match the cluster's EKS access entry."
-  type        = string
-  default     = "arn:aws:iam::355433853014:role/spacelift-role"
-}
-
 variable "namespace" {
   description = "Namespace for the PoC and the kube-state-metrics release."
   type        = string
