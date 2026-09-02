@@ -1,0 +1,15 @@
+# Terraform / OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+errored.tfstate
+crash.log
+
+# Secrets — never commit
+spacelift/spacelift.key
+*.key
+*.pem
+*.csr
+
+# macOS
+.DS_Store

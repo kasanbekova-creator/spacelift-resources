@@ -1,0 +1,7 @@
+version: "2"
+
+# TEMPORARY diagnostic: print the worker's real AWS identity and the cluster's
+# access entries into the run log, right before plan. Remove once auth is confirmed.
+before_plan:
+  - "aws sts get-caller-identity"
+  - "aws eks list-access-entries --cluster-name dvtl815-poc --region us-west-2"
