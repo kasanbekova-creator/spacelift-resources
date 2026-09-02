@@ -1,1 +1,1 @@
-app_image_tag = "e8b6cd9c4eb50309d91eedede487db9c4d139b25"
+app_image_tag = "6d920dfe842162e3a2292770912ff4c4f18c7c5c"
